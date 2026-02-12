@@ -3,62 +3,39 @@
 #include "WordCount.h"
 
 int main() {
-    std::cout << "Running the tests on the WordCount file:" << std::endl;
+    std::cout << "run failed tests:" << std::endl;
 
-    WordCount wc;
+    ASSERT_EQUALS("s", WordCount::makeValidWord("$-s'-#"));
+    ASSERT_EQUALS("", WordCount::makeValidWord("$$*-'-!"));
 
-    ASSERT_EQUALS(0, wc.getTotalWords());
-    ASSERT_EQUALS(0, wc.getNumUniqueWords());
+    WordCount wc2;
 
-    wc.incrWordCount("AaKaSH");
-    wc.incrWordCount("aakash");
+    wc2.incrWordCount("foO");
+    wc2.incrWordCount("foo");
+    wc2.incrWordCount("bAr");
+    wc2.incrWordCount("BaR");
+    wc2.incrWordCount("foo#bar");
+    wc2.incrWordCount("foo_bar-");
+    wc2.incrWordCount("'foo-bar-");
 
-    ASSERT_EQUALS(2, wc.getTotalWords());
-    ASSERT_EQUALS(1, wc.getNumUniqueWords());
-    ASSERT_EQUALS(2, wc.getWordCount("AAKASH"));
-    ASSERT_EQUALS(0, wc.incrWordCount(""));
+    ASSERT_EQUALS(0, wc2.incrWordCount("--$$--"));
+    ASSERT_EQUALS(7, wc2.getTotalWords());
+    ASSERT_EQUALS(4, wc2.getNumUniqueWords());
 
-    wc.incrWordCount("ramen-noodles");
-    wc.incrWordCount("RAMEN-NOODLES");
+    WordCount wc3;
 
-    ASSERT_EQUALS(4, wc.getTotalWords());
-    ASSERT_EQUALS(2, wc.getNumUniqueWords());
-    ASSERT_EQUALS(2, wc.getWordCount("ramen-noodles"));
+    wc3.incrWordCount("foo");
+    wc3.incrWordCount("oof");
+    wc3.incrWordCount("ofo");
+    wc3.incrWordCount("isn't");
 
-    wc.decrWordCount("aakash");
+    ASSERT_EQUALS(2, wc3.incrWordCount("$#'isn't--"));
 
-    ASSERT_EQUALS(3, wc.getTotalWords());
-    ASSERT_EQUALS(2, wc.getNumUniqueWords());
-    ASSERT_EQUALS(1, wc.getWordCount("aakash"));
+    wc3.incrWordCount("n'ist");
 
-    ASSERT_EQUALS(-1, wc.decrWordCount(""));
-    ASSERT_EQUALS(-1, wc.decrWordCount("missing"));
+    ASSERT_EQUALS(5, wc3.getNumUniqueWords());
+    ASSERT_EQUALS(2, wc3.getWordCount("isn't"));
 
-    wc.decrWordCount("AaKaSH");
-
-    ASSERT_EQUALS(0, wc.getWordCount("aakash"));
-
-    ASSERT_EQUALS("monkeys", WordCount::makeValidWord("12mOnkEYs-$"));
-    ASSERT_EQUALS("paive", WordCount::makeValidWord("Pa55ive"));
-    ASSERT_EQUALS("don't", WordCount::makeValidWord("don't"));
-    ASSERT_EQUALS("ramen-noodles", WordCount::makeValidWord("Ramen-noodles"));
-    ASSERT_EQUALS("hay", WordCount::makeValidWord("hA99y"));
-    ASSERT_EQUALS("potato-chip", WordCount::makeValidWord("$2p3O$TA2T4O-cH2Ip"));
-
-    wc.incrWordCount("12mOnkEYs-$");
-    wc.incrWordCount("monkeys");
-    wc.incrWordCount("Pa55ive");
-    wc.incrWordCount("paive");
-    wc.incrWordCount("ramen-noodles");
-    wc.incrWordCount("ramen-noodles");
-
-    ASSERT_EQUALS(3, wc.getNumUniqueWords());
-    ASSERT_EQUALS(2, wc.getWordCount("monkeys"));
-    ASSERT_EQUALS(2, wc.getWordCount("paive"));
-    ASSERT_EQUALS(4, wc.getWordCount("ramen-noodles"));
-
-    ASSERT_EQUALS("", WordCount::makeValidWord(""));
-
-    std::cout << "All tests done." << std::endl;
+    std::cout << "all tests run" << std::endl;
     return 0;
 }

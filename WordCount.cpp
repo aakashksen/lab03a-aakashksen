@@ -114,10 +114,10 @@ std::string WordCount::makeValidWord(std::string word) {
 			clearedF += curr;
 		} 
 		else if (curr == '-' || curr == '\'') {
-			if (i > 0 && i < final.length() - 1) {
-				clearedF += curr;
-			}
+			if (i > 0 && i < final.length() - 1 && isWordChar(final[i - 1]) && isWordChar(final[i + 1])) {
+			clearedF += curr;
 		}
+}
 	}
 	return clearedF;
 }
